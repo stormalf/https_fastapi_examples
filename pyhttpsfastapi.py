@@ -4,9 +4,11 @@ import os
 from typing import Optional
 from fastapi import FastAPI
 import uvicorn
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 '''
 Example using uvicorn and fastapi sample from https://fastapi.tiangolo.com starting on https
+Lots options exist to secure applications. More information at https://retz.blog/posts/middleware-and-security-in-fastapi
 
 '''
 
@@ -19,6 +21,15 @@ reload = True
 app = FastAPI(title="testing FastAPI",
     description="This API was built with FastAPI and has only for testing purpose",
     version="1.0.0")
+
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
+# ...
+
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["localhost"],
+)
 
 #root api that returns the hello world
 @app.get("/")
